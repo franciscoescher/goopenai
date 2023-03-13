@@ -1,6 +1,7 @@
 package goopenai
 
 import (
+	"context"
 	"encoding/json"
 )
 
@@ -14,12 +15,12 @@ type CreateImagesRequest struct {
 	User           string `json:"user,omitempty"`
 }
 
-func (c *Client) CreateImagesRaw(r CreateImagesRequest) ([]byte, error) {
-	return c.Post(IMAGES_URL, r)
+func (c *Client) CreateImagesRaw(ctx context.Context, r CreateImagesRequest) ([]byte, error) {
+	return c.Post(ctx, IMAGES_URL, r)
 }
 
-func (c *Client) CreateImages(r CreateImagesRequest) (response CreateImagesResponse, err error) {
-	raw, err := c.CreateImagesRaw(r)
+func (c *Client) CreateImages(ctx context.Context, r CreateImagesRequest) (response CreateImagesResponse, err error) {
+	raw, err := c.CreateImagesRaw(ctx, r)
 	if err != nil {
 		return response, err
 	}

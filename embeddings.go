@@ -1,6 +1,7 @@
 package goopenai
 
 import (
+	"context"
 	"encoding/json"
 )
 
@@ -12,12 +13,12 @@ type CreateEmbeddingsRequest struct {
 	User  string   `json:"user,omitempty"`
 }
 
-func (c *Client) CreateEmbeddingsRaw(r CreateEmbeddingsRequest) ([]byte, error) {
-	return c.Post(EMBEDDINGS_URL, r)
+func (c *Client) CreateEmbeddingsRaw(ctx context.Context, r CreateEmbeddingsRequest) ([]byte, error) {
+	return c.Post(ctx, EMBEDDINGS_URL, r)
 }
 
-func (c *Client) CreateEmbeddings(r CreateEmbeddingsRequest) (response CreateEmbeddingsResponse, err error) {
-	raw, err := c.CreateEmbeddingsRaw(r)
+func (c *Client) CreateEmbeddings(ctx context.Context, r CreateEmbeddingsRequest) (response CreateEmbeddingsResponse, err error) {
+	raw, err := c.CreateEmbeddingsRaw(ctx, r)
 	if err != nil {
 		return response, err
 	}

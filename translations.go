@@ -1,6 +1,7 @@
 package goopenai
 
 import (
+	"context"
 	"encoding/json"
 )
 
@@ -14,12 +15,12 @@ type CreateTranslationsRequest struct {
 	Temperature    float64 `json:"temperature,omitempty"`
 }
 
-func (c *Client) CreateTranslationsRaw(r CreateTranslationsRequest) ([]byte, error) {
-	return c.Post(TRANSLATIONS_URL, r)
+func (c *Client) CreateTranslationsRaw(ctx context.Context, r CreateTranslationsRequest) ([]byte, error) {
+	return c.Post(ctx, TRANSLATIONS_URL, r)
 }
 
-func (c *Client) CreateTranslations(r CreateTranslationsRequest) (response CreateTranslationsResponse, err error) {
-	raw, err := c.CreateTranslationsRaw(r)
+func (c *Client) CreateTranslations(ctx context.Context, r CreateTranslationsRequest) (response CreateTranslationsResponse, err error) {
+	raw, err := c.CreateTranslationsRaw(ctx, r)
 	if err != nil {
 		return response, err
 	}

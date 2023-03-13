@@ -2,6 +2,7 @@ package goopenai
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"io"
 	"net/http"
@@ -27,7 +28,7 @@ func NewClient(apiKey string, organization string) *Client {
 }
 
 // Post makes a post request
-func (c *Client) Post(url string, input any) (response []byte, err error) {
+func (c *Client) Post(ctx context.Context, url string, input any) (response []byte, err error) {
 	response = make([]byte, 0)
 
 	rJson, err := json.Marshal(input)
@@ -35,7 +36,7 @@ func (c *Client) Post(url string, input any) (response []byte, err error) {
 		return response, err
 	}
 
-	resp, err := c.Call(http.MethodPost, url, bytes.NewReader(rJson))
+	resp, err := c.Call(ctx, http.MethodPost, url, bytes.NewReader(rJson))
 	if err != nil {
 		return response, err
 	}
@@ -46,7 +47,7 @@ func (c *Client) Post(url string, input any) (response []byte, err error) {
 }
 
 // Get makes a get request
-func (c *Client) Get(url string, input any) (response []byte, err error) {
+func (c *Client) Get(ctx context.Context, url string, input any) (response []byte, err error) {
 	if input != nil {
 		vals, _ := query.Values(input)
 		query := vals.Encode()
@@ -60,7 +61,7 @@ func (c *Client) Get(url string, input any) (response []byte, err error) {
 		}
 	}
 
-	resp, err := c.Call(http.MethodGet, url, nil)
+	resp, err := c.Call(ctx, http.MethodGet, url, nil)
 	if err != nil {
 		return response, err
 	}
@@ -71,11 +72,13 @@ func (c *Client) Get(url string, input any) (response []byte, err error) {
 }
 
 // Call makes a request
-func (c *Client) Call(method string, url string, body io.Reader) (response *http.Response, err error) {
+func (c *Client) Call(ctx context.Context, method string, url string, body io.Reader) (response *http.Response, err error) {
 	req, err := http.NewRequest(method, url, body)
 	if err != nil {
 		return response, err
 	}
+
+	req = req.WithContext(ctx)
 
 	sb := strings.Builder{}
 	sb.WriteString("Bearer ")

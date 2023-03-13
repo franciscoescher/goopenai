@@ -1,15 +1,18 @@
 package goopenai
 
-import "encoding/json"
+import (
+	"context"
+	"encoding/json"
+)
 
 const MODELS_URL = "https://api.openai.com/v1/models"
 
-func (c *Client) GetModelsRaw() ([]byte, error) {
-	return c.Get(MODELS_URL, nil)
+func (c *Client) GetModelsRaw(ctx context.Context) ([]byte, error) {
+	return c.Get(ctx, MODELS_URL, nil)
 }
 
-func (c *Client) GetModels() (response GetModelsResponse, err error) {
-	raw, err := c.GetModelsRaw()
+func (c *Client) GetModels(ctx context.Context) (response GetModelsResponse, err error) {
+	raw, err := c.GetModelsRaw(ctx)
 	if err != nil {
 		return response, err
 	}

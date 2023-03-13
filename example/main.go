@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 
@@ -13,7 +14,7 @@ func main() {
 
 	client := goopenai.NewClient(apiKey, organization)
 
-	models, err := client.GetModelsRaw()
+	models, err := client.GetModelsRaw(context.Background())
 	if err != nil {
 		panic(err)
 	}
@@ -30,7 +31,7 @@ func main() {
 		Temperature: 0.7,
 	}
 
-	completions, err := client.CreateCompletions(r)
+	completions, err := client.CreateCompletions(context.Background(), r)
 	if err != nil {
 		panic(err)
 	}

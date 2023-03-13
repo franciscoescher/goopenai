@@ -1,6 +1,7 @@
 package goopenai
 
 import (
+	"context"
 	"encoding/json"
 )
 
@@ -26,12 +27,12 @@ type CreateCompletionsRequest struct {
 	User             string            `json:"user,omitempty"`
 }
 
-func (c *Client) CreateCompletionsRaw(r CreateCompletionsRequest) ([]byte, error) {
-	return c.Post(COMPLETIONS_URL, r)
+func (c *Client) CreateCompletionsRaw(ctx context.Context, r CreateCompletionsRequest) ([]byte, error) {
+	return c.Post(ctx, COMPLETIONS_URL, r)
 }
 
-func (c *Client) CreateCompletions(r CreateCompletionsRequest) (response CreateCompletionsResponse, err error) {
-	raw, err := c.CreateCompletionsRaw(r)
+func (c *Client) CreateCompletions(ctx context.Context, r CreateCompletionsRequest) (response CreateCompletionsResponse, err error) {
+	raw, err := c.CreateCompletionsRaw(ctx, r)
 	if err != nil {
 		return response, err
 	}

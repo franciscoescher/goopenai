@@ -1,6 +1,7 @@
 package goopenai
 
 import (
+	"context"
 	"encoding/json"
 )
 
@@ -15,12 +16,12 @@ type CreateTranscriptionsRequest struct {
 	Language       string  `json:"language,omitempty"`
 }
 
-func (c *Client) CreateTranscriptionsRaw(r CreateTranscriptionsRequest) ([]byte, error) {
-	return c.Post(TRANSCRIPTIONS_URL, r)
+func (c *Client) CreateTranscriptionsRaw(ctx context.Context, r CreateTranscriptionsRequest) ([]byte, error) {
+	return c.Post(ctx, TRANSCRIPTIONS_URL, r)
 }
 
-func (c *Client) CreateTranscriptions(r CreateTranscriptionsRequest) (response CreateTranscriptionsResponse, err error) {
-	raw, err := c.CreateTranscriptionsRaw(r)
+func (c *Client) CreateTranscriptions(ctx context.Context, r CreateTranscriptionsRequest) (response CreateTranscriptionsResponse, err error) {
+	raw, err := c.CreateTranscriptionsRaw(ctx, r)
 	if err != nil {
 		return response, err
 	}

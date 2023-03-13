@@ -1,6 +1,7 @@
 package goopenai
 
 import (
+	"context"
 	"encoding/json"
 )
 
@@ -15,12 +16,12 @@ type CreateEditsRequest struct {
 	TopP        float64 `json:"top_p,omitempty"`
 }
 
-func (c *Client) CreateEditsRaw(r CreateEditsRequest) ([]byte, error) {
-	return c.Post(EDITS_URL, r)
+func (c *Client) CreateEditsRaw(ctx context.Context, r CreateEditsRequest) ([]byte, error) {
+	return c.Post(ctx, EDITS_URL, r)
 }
 
-func (c *Client) CreateEdits(r CreateEditsRequest) (response CreateEditsResponse, err error) {
-	raw, err := c.CreateEditsRaw(r)
+func (c *Client) CreateEdits(ctx context.Context, r CreateEditsRequest) (response CreateEditsResponse, err error) {
+	raw, err := c.CreateEditsRaw(ctx, r)
 	if err != nil {
 		return response, err
 	}

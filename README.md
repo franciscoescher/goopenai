@@ -45,7 +45,7 @@ func main() {
 		Temperature: 0.7,
 	}
 
-	completions, err := client.Completions(r)
+	completions, err := client.Completions(context.Background(), r)
 	if err != nil {
 		panic(err)
 	}

@@ -1,6 +1,7 @@
 package goopenai
 
 import (
+	"context"
 	"encoding/json"
 )
 
@@ -21,12 +22,12 @@ type CreateChatsRequest struct {
 	User             string            `json:"user,omitempty"`
 }
 
-func (c *Client) CreateChatsRaw(r CreateChatsRequest) ([]byte, error) {
-	return c.Post(CHATS_URL, r)
+func (c *Client) CreateChatsRaw(ctx context.Context, r CreateChatsRequest) ([]byte, error) {
+	return c.Post(ctx, CHATS_URL, r)
 }
 
-func (c *Client) CreateChats(r CreateChatsRequest) (response CreateChatsResponse, err error) {
-	raw, err := c.CreateChatsRaw(r)
+func (c *Client) CreateChats(ctx context.Context, r CreateChatsRequest) (response CreateChatsResponse, err error) {
+	raw, err := c.CreateChatsRaw(ctx, r)
 	if err != nil {
 		return response, err
 	}

@@ -1,6 +1,7 @@
 package goopenai
 
 import (
+	"context"
 	"encoding/json"
 )
 
@@ -11,12 +12,12 @@ type CreateModerationsRequest struct {
 	Model string   `json:"model,omitempty"`
 }
 
-func (c *Client) CreateModerationsRaw(r CreateModerationsRequest) ([]byte, error) {
-	return c.Post(MODERATIONS_URL, r)
+func (c *Client) CreateModerationsRaw(ctx context.Context, r CreateModerationsRequest) ([]byte, error) {
+	return c.Post(ctx, MODERATIONS_URL, r)
 }
 
-func (c *Client) CreateModerations(r CreateModerationsRequest) (response CreateModerationsResponse, err error) {
-	raw, err := c.CreateModerationsRaw(r)
+func (c *Client) CreateModerations(ctx context.Context, r CreateModerationsRequest) (response CreateModerationsResponse, err error) {
+	raw, err := c.CreateModerationsRaw(ctx, r)
 	if err != nil {
 		return response, err
 	}
