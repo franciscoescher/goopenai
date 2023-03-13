@@ -34,7 +34,14 @@ func (c *Client) Post(url string, input any) (response []byte, err error) {
 		return response, err
 	}
 
-	return c.Call(http.MethodPost, url, bytes.NewReader(rJson))
+	resp, err := c.Call(http.MethodPost, url, bytes.NewReader(rJson))
+	if err != nil {
+		return response, err
+	}
+	defer resp.Body.Close()
+
+	response, err = io.ReadAll(resp.Body)
+	return response, err
 }
 
 // Get makes a get request
@@ -48,13 +55,18 @@ func (c *Client) Get(url string, input any) (response []byte, err error) {
 		}
 	}
 
-	return c.Call(http.MethodGet, url, nil)
+	resp, err := c.Call(http.MethodGet, url, nil)
+	if err != nil {
+		return response, err
+	}
+	defer resp.Body.Close()
+
+	response, err = io.ReadAll(resp.Body)
+	return response, err
 }
 
 // Call makes a request
-func (c *Client) Call(method string, url string, body io.Reader) (response []byte, err error) {
-	response = make([]byte, 0)
-
+func (c *Client) Call(method string, url string, body io.Reader) (response *http.Response, err error) {
 	req, err := http.NewRequest(method, url, body)
 	if err != nil {
 		return response, err
@@ -68,13 +80,7 @@ func (c *Client) Call(method string, url string, body io.Reader) (response []byt
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
-	if err != nil {
-		return response, err
-	}
-	defer resp.Body.Close()
-
-	response, err = io.ReadAll(resp.Body)
-	return response, err
+	return resp, err
 }
 
 // Error is the error standard response from the API
