@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"strings"
 
 	"github.com/google/go-querystring/query"
 )
@@ -51,7 +52,11 @@ func (c *Client) Get(url string, input any) (response []byte, err error) {
 		query := vals.Encode()
 
 		if query != "" {
-			url += "?" + query
+			sb := strings.Builder{}
+			sb.WriteString(url)
+			sb.WriteString("?")
+			sb.WriteString(query)
+			url = sb.String()
 		}
 	}
 
@@ -72,7 +77,11 @@ func (c *Client) Call(method string, url string, body io.Reader) (response *http
 		return response, err
 	}
 
-	req.Header.Add("Authorization", "Bearer "+c.apiKey)
+	sb := strings.Builder{}
+	sb.WriteString("Bearer ")
+	sb.WriteString(c.apiKey)
+	authHeader := sb.String()
+	req.Header.Add("Authorization", authHeader)
 	req.Header.Add("Content-Type", "application/json")
 	if c.Organization != "" {
 		req.Header.Add("OpenAI-Organization", c.Organization)
