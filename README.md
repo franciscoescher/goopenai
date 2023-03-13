@@ -2,6 +2,10 @@
 
 This is a Go client library for the OpenAI API.
 
+It implements the methods described in the docs: https://platform.openai.com/docs/api-reference/introduction
+
+Implemented methods can be found 
+
 ## Installation
 
     go get github.com/franciscoescher/goopenai
