@@ -81,6 +81,7 @@ func (c *Client) Call(method string, url string, body io.Reader) (response *http
 	sb.WriteString("Bearer ")
 	sb.WriteString(c.apiKey)
 	authHeader := sb.String()
+
 	req.Header.Add("Authorization", authHeader)
 	req.Header.Add("Content-Type", "application/json")
 	if c.Organization != "" {

@@ -54,6 +54,9 @@ func main() {
 }
 ```
 
+Run this code using:
+`API_KEY=<your-api-key> API_ORG=<your-org-id> go run .`
+
 ## Note
 
 This library is not complete and not fully tested.
