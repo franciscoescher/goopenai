@@ -73,12 +73,10 @@ func (c *Client) Get(ctx context.Context, url string, input any) (response []byt
 
 // Call makes a request
 func (c *Client) Call(ctx context.Context, method string, url string, body io.Reader) (response *http.Response, err error) {
-	req, err := http.NewRequest(method, url, body)
+	req, err := http.NewRequestWithContext(ctx, method, url, body)
 	if err != nil {
 		return response, err
 	}
-
-	req = req.WithContext(ctx)
 
 	sb := strings.Builder{}
 	sb.WriteString("Bearer ")
