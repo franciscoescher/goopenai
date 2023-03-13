@@ -4,7 +4,7 @@ This is a Go client library for the OpenAI API.
 
 It implements the methods described in the docs: https://platform.openai.com/docs/api-reference/introduction
 
-Implemented methods can be found 
+Implemented methods can be found in the Interface.go file.
 
 ## Installation
 
