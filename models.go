@@ -7,12 +7,12 @@ import (
 
 const MODELS_URL = "https://api.openai.com/v1/models"
 
-func (c *Client) GetModelsRaw(ctx context.Context) ([]byte, error) {
+func (c *Client) ListModelsRaw(ctx context.Context) ([]byte, error) {
 	return c.Get(ctx, MODELS_URL, nil)
 }
 
-func (c *Client) GetModels(ctx context.Context) (response GetModelsResponse, err error) {
-	raw, err := c.GetModelsRaw(ctx)
+func (c *Client) ListModels(ctx context.Context) (response ListModelsResponse, err error) {
+	raw, err := c.ListModelsRaw(ctx)
 	if err != nil {
 		return response, err
 	}
@@ -21,7 +21,7 @@ func (c *Client) GetModels(ctx context.Context) (response GetModelsResponse, err
 	return response, err
 }
 
-type GetModelsResponse struct {
+type ListModelsResponse struct {
 	Data []struct {
 		ID          string   `json:"id,omitempty"`
 		Object      string   `json:"object,omitempty"`

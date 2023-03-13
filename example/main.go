@@ -14,7 +14,7 @@ func main() {
 
 	client := goopenai.NewClient(apiKey, organization)
 
-	models, err := client.GetModelsRaw(context.Background())
+	models, err := client.ListModelsRaw(context.Background())
 	if err != nil {
 		panic(err)
 	}
