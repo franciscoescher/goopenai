@@ -9,17 +9,38 @@ import (
 )
 
 func main() {
+	client := getClient()
+
+	writeModels(client)
+
+	printCompletions(client)
+}
+
+func getClient() *goopenai.Client {
 	apiKey := os.Getenv("API_KEY")
 	organization := os.Getenv("API_ORG")
+	return goopenai.NewClient(apiKey, organization)
+}
 
-	client := goopenai.NewClient(apiKey, organization)
-
+func writeModels(client *goopenai.Client) {
 	models, err := client.ListModelsRaw(context.Background())
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(models))
+	f, err := os.Create("example/models.json")
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
 
+	// write models to file
+	_, err = f.Write(models)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func printCompletions(client *goopenai.Client) {
 	r := goopenai.CreateCompletionsRequest{
 		Model: "gpt-3.5-turbo",
 		Messages: []goopenai.Message{
@@ -31,13 +52,15 @@ func main() {
 		Temperature: 0.7,
 	}
 
-	completions, err := client.CreateCompletions(context.Background(), r)
+	completions, err := client.CreateCompletionsRaw(context.Background(), r)
+
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(completions)
+	fmt.Println(string(completions))
 	/*
+
 		{
 		  "id": "chatcmpl-xxx",
 		  "object": "chat.completion",
