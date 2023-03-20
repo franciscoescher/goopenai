@@ -12,7 +12,7 @@ Implemented methods can be found in the Interface.go file.
 
 ## Usage
 
-Fiest, you need to create a client with the api key and organization id.
+First, you need to create a client with the api key and organization id.
 
 ```
 client := goopenai.NewClient(apiKey, organization)
