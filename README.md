@@ -12,7 +12,7 @@ Implemented methods can be found in the Interface.go file.
 
 ## Usage
 
-Fiest, you need to create a client with the api key and organization id.
+First, you need to create a client with the api key and organization id.
 
 ```
 client := goopenai.NewClient(apiKey, organization)
@@ -27,9 +27,8 @@ package main
 
 import (
 	"context"
-  "fmt"
-
-  "github.com/franciscoescher/golinkedin"
+	"fmt"
+	"github.com/franciscoescher/golinkedin"
 )
 
 func main() {
@@ -56,6 +55,7 @@ func main() {
 
 	fmt.Println(completions)
 }
+
 ```
 
 Run this code using:
