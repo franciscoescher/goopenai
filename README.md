@@ -27,9 +27,8 @@ package main
 
 import (
 	"context"
-  "fmt"
-
-  "github.com/franciscoescher/golinkedin"
+	"fmt"
+	"github.com/franciscoescher/golinkedin"
 )
 
 func main() {
@@ -56,6 +55,7 @@ func main() {
 
 	fmt.Println(completions)
 }
+
 ```
 
 Run this code using:
