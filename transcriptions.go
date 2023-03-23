@@ -16,6 +16,11 @@ type CreateTranscriptionsRequest struct {
 	Language       string  `json:"language,omitempty"`
 }
 
+type CreateTranscriptionsResponse struct {
+	Text  string `json:"text,omitempty"`
+	Error Error  `json:"error,omitempty"`
+}
+
 func (c *Client) CreateTranscriptionsRaw(ctx context.Context, r CreateTranscriptionsRequest) ([]byte, error) {
 	return c.Post(ctx, TRANSCRIPTIONS_URL, r)
 }
@@ -28,10 +33,4 @@ func (c *Client) CreateTranscriptions(ctx context.Context, r CreateTranscription
 
 	err = json.Unmarshal(raw, &response)
 	return response, err
-}
-
-type CreateTranscriptionsResponse struct {
-	Text string `json:"text,omitempty"`
-
-	Error Error `json:"error,omitempty"`
 }

@@ -13,6 +13,24 @@ type CreateEmbeddingsRequest struct {
 	User  string   `json:"user,omitempty"`
 }
 
+type CreateEmbeddingsResponse struct {
+	Object string `json:"object,omitempty"`
+	Data   Data   `json:"data,omitempty"`
+	Model  string `json:"model,omitempty"`
+	Usage  Usage  `json:"usage,omitempty"`
+	Error  Error  `json:"error"`
+}
+
+type Data []struct {
+	Object      string    `json:"object,omitempty"`
+	Embedding   []float64 `json:"embedding,omitempty"`
+	Index       int       `json:"index,omitempty"`
+	URL         string    `json:"url,omitempty"`
+	ID          string    `json:"id,omitempty"`
+	OwnedBy     string    `json:"owned_by,omitempty"`
+	Permissions []string  `json:"permissions,omitempty"`
+}
+
 func (c *Client) CreateEmbeddingsRaw(ctx context.Context, r CreateEmbeddingsRequest) ([]byte, error) {
 	return c.Post(ctx, EMBEDDINGS_URL, r)
 }
@@ -25,20 +43,4 @@ func (c *Client) CreateEmbeddings(ctx context.Context, r CreateEmbeddingsRequest
 
 	err = json.Unmarshal(raw, &response)
 	return response, err
-}
-
-type CreateEmbeddingsResponse struct {
-	Object string `json:"object,omitempty"`
-	Data   []struct {
-		Object    string    `json:"object,omitempty"`
-		Embedding []float64 `json:"embedding,omitempty"`
-		Index     int       `json:"index,omitempty"`
-	} `json:"data,omitempty"`
-	Model string `json:"model,omitempty"`
-	Usage struct {
-		PromptTokens int `json:"prompt_tokens,omitempty"`
-		TotalTokens  int `json:"total_tokens,omitempty"`
-	} `json:"usage,omitempty"`
-
-	Error Error `json:"error"`
 }

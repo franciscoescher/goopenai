@@ -15,6 +15,11 @@ type CreateTranslationsRequest struct {
 	Temperature    float64 `json:"temperature,omitempty"`
 }
 
+type CreateTranslationsResponse struct {
+	Text  string `json:"text,omitempty"`
+	Error Error  `json:"error,omitempty"`
+}
+
 func (c *Client) CreateTranslationsRaw(ctx context.Context, r CreateTranslationsRequest) ([]byte, error) {
 	return c.Post(ctx, TRANSLATIONS_URL, r)
 }
@@ -27,10 +32,4 @@ func (c *Client) CreateTranslations(ctx context.Context, r CreateTranslationsReq
 
 	err = json.Unmarshal(raw, &response)
 	return response, err
-}
-
-type CreateTranslationsResponse struct {
-	Text string `json:"text,omitempty"`
-
-	Error Error `json:"error,omitempty"`
 }

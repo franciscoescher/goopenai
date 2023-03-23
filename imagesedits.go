@@ -17,6 +17,12 @@ type CreateImagesEditsRequest struct {
 	User           string `json:"user,omitempty"`
 }
 
+type CreateImagesEditsResponse struct {
+	Created int   `json:"created,omitempty"`
+	Data    Data  `json:"data,omitempty"`
+	Error   Error `json:"error,omitempty"`
+}
+
 func (c *Client) CreateImagesEditsRaw(ctx context.Context, r CreateImagesEditsRequest) ([]byte, error) {
 	return c.Post(ctx, IMAGES_EDITS_URL, r)
 }
@@ -29,13 +35,4 @@ func (c *Client) CreateImagesEdits(ctx context.Context, r CreateImagesEditsReque
 
 	err = json.Unmarshal(raw, &response)
 	return response, err
-}
-
-type CreateImagesEditsResponse struct {
-	Created int `json:"created,omitempty"`
-	Data    []struct {
-		URL string `json:"url,omitempty"`
-	} `json:"data,omitempty"`
-
-	Error Error `json:"error,omitempty"`
 }

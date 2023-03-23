@@ -15,6 +15,12 @@ type CreateImagesVariationsRequest struct {
 	User           string `json:"user,omitempty"`
 }
 
+type CreateImagesVariationsResponse struct {
+	Created int   `json:"created,omitempty"`
+	Data    Data  `json:"data,omitempty"`
+	Error   Error `json:"error,omitempty"`
+}
+
 func (c *Client) CreateImagesVariationsRaw(ctx context.Context, r CreateImagesVariationsRequest) ([]byte, error) {
 	return c.Post(ctx, IMAGES_VARIATIONS_URL, r)
 }
@@ -27,13 +33,4 @@ func (c *Client) CreateImagesVariations(ctx context.Context, r CreateImagesVaria
 
 	err = json.Unmarshal(raw, &response)
 	return response, err
-}
-
-type CreateImagesVariationsResponse struct {
-	Created int `json:"created,omitempty"`
-	Data    []struct {
-		URL string `json:"url,omitempty"`
-	} `json:"data,omitempty"`
-
-	Error Error `json:"error,omitempty"`
 }
