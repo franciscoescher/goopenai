@@ -37,7 +37,7 @@ func main() {
 
 	client := goopenai.NewClient(apiKey, organization)
 
-	r := goopenai.CompletionsRequest{
+	r := goopenai.CreateCompletionsRequest{
 		Model: "gpt-3.5-turbo",
 		Messages: []goopenai.Message{
 			{
@@ -48,7 +48,7 @@ func main() {
 		Temperature: 0.7,
 	}
 
-	completions, err := client.Completions(context.Background(), r)
+	completions, err := client.CreateCompletions(context.Background(), r)
 	if err != nil {
 		panic(err)
 	}
