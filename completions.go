@@ -47,10 +47,12 @@ type CreateCompletionsResponse struct {
 	Created int    `json:"created,omitempty"`
 	Model   string `json:"model,omitempty"`
 	Choices []struct {
-		Text         string      `json:"text,omitempty"`
-		Index        int         `json:"index,omitempty"`
-		Logprobs     interface{} `json:"logprobs,omitempty"`
-		FinishReason string      `json:"finish_reason,omitempty"`
+		Message struct {
+			Role    string `json:"role,omitempty"`
+			Content string `json:"content,omitempty"`
+		} `json:"message"`
+		FinishReason string `json:"finish_reason,omitempty"`
+		Index        int    `json:"index,omitempty"`
 	} `json:"choices,omitempty"`
 	Usage struct {
 		PromptTokens     int `json:"prompt_tokens,omitempty"`
