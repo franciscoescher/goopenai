@@ -47,6 +47,10 @@ type CreateCompletionsResponse struct {
 	Created int    `json:"created,omitempty"`
 	Model   string `json:"model,omitempty"`
 	Choices []struct {
+		Message struct {
+			Role    string `json:"role,omitempty"`
+			Content string `json:"content,omitempty"`
+		} `json:"message"`
 		Text         string      `json:"text,omitempty"`
 		Index        int         `json:"index,omitempty"`
 		Logprobs     interface{} `json:"logprobs,omitempty"`
