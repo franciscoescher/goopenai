@@ -28,7 +28,8 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/franciscoescher/golinkedin"
+
+	"github.com/franciscoescher/goopenai"
 )
 
 func main() {
