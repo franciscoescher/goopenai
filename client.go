@@ -47,15 +47,7 @@ func (c *Client) Post(ctx context.Context, url string, input any) (response []by
 		return nil, err
 	}
 
-	var errorResponse struct {
-		Error *Error `json:"error,omitempty"`
-	}
-	err = json.Unmarshal(response, &errorResponse)
-	if errorResponse.Error != nil {
-		return nil, errorResponse.Error
-	}
-
-	return response, err
+	return checkError(response)
 }
 
 // Get makes a get request
@@ -80,16 +72,25 @@ func (c *Client) Get(ctx context.Context, url string, input any) (response []byt
 	defer resp.Body.Close()
 
 	response, err = io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
 
+	return checkError(response)
+}
+
+func checkError(response []byte) ([]byte, error) {
 	var errorResponse struct {
 		Error *Error `json:"error,omitempty"`
 	}
-	err = json.Unmarshal(response, &errorResponse)
+	err := json.Unmarshal(response, &errorResponse)
+	if err != nil {
+		return nil, err
+	}
 	if errorResponse.Error != nil {
 		return nil, errorResponse.Error
 	}
-
-	return response, err
+	return response, nil
 }
 
 // Call makes a request
