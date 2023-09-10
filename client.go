@@ -80,6 +80,15 @@ func (c *Client) Get(ctx context.Context, url string, input any) (response []byt
 	defer resp.Body.Close()
 
 	response, err = io.ReadAll(resp.Body)
+
+	var errorResponse struct {
+		Error *Error `json:"error,omitempty"`
+	}
+	err = json.Unmarshal(response, &errorResponse)
+	if errorResponse.Error != nil {
+		return nil, errorResponse.Error
+	}
+
 	return response, err
 }
 
