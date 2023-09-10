@@ -40,5 +40,5 @@ type CreateEmbeddingsResponse struct {
 		TotalTokens  int `json:"total_tokens,omitempty"`
 	} `json:"usage,omitempty"`
 
-	Error Error `json:"error"`
+	Error *Error `json:"error"`
 }

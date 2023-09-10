@@ -30,5 +30,5 @@ type ListModelsResponse struct {
 	} `json:"data,omitempty"`
 	Object string `json:"object,omitempty"`
 
-	Error Error `json:"error,omitempty"`
+	Error *Error `json:"error,omitempty"`
 }

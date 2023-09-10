@@ -33,5 +33,5 @@ func (c *Client) CreateTranscriptions(ctx context.Context, r CreateTranscription
 type CreateTranscriptionsResponse struct {
 	Text string `json:"text,omitempty"`
 
-	Error Error `json:"error,omitempty"`
+	Error *Error `json:"error,omitempty"`
 }

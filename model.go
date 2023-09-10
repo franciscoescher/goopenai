@@ -27,5 +27,5 @@ type RetrieveModelResponse struct {
 	OwnedBy     string   `json:"owned_by,omitempty"`
 	Permissions []string `json:"permissions,omitempty"`
 
-	Error Error `json:"error,omitempty"`
+	Error *Error `json:"error,omitempty"`
 }

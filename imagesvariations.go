@@ -35,5 +35,5 @@ type CreateImagesVariationsResponse struct {
 		URL string `json:"url,omitempty"`
 	} `json:"data,omitempty"`
 
-	Error Error `json:"error,omitempty"`
+	Error *Error `json:"error,omitempty"`
 }

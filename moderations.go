@@ -51,5 +51,5 @@ type CreateModerationsResponse struct {
 		Flagged bool `json:"flagged,omitempty"`
 	} `json:"results,omitempty"`
 
-	Error Error `json:"error,omitempty"`
+	Error *Error `json:"error,omitempty"`
 }

@@ -32,5 +32,5 @@ func (c *Client) CreateTranslations(ctx context.Context, r CreateTranslationsReq
 type CreateTranslationsResponse struct {
 	Text string `json:"text,omitempty"`
 
-	Error Error `json:"error,omitempty"`
+	Error *Error `json:"error,omitempty"`
 }
