@@ -35,7 +35,6 @@ type CreateChatCompletionsResponse struct {
 	Model   string                        `json:"model,omitempty"`
 	Choices []CreateChatCompletionsChoice `json:"choices,omitempty"`
 	Usage   CreateChatCompletionsUsave    `json:"usage,omitempty"`
-	Error   *Error                        `json:"error,omitempty"`
 }
 
 type CreateChatCompletionsChoice struct {

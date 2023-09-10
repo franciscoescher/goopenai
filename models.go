@@ -8,7 +8,6 @@ import (
 type ListModelsResponse struct {
 	Data   []ListModelsData `json:"data,omitempty"`
 	Object string           `json:"object,omitempty"`
-	Error  *Error           `json:"error,omitempty"`
 }
 
 type ListModelsData struct {

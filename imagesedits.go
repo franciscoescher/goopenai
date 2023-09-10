@@ -18,7 +18,6 @@ type CreateImagesEditsRequest struct {
 type CreateImagesEditsResponse struct {
 	Created int                     `json:"created,omitempty"`
 	Data    []CreateImagesEditsData `json:"data,omitempty"`
-	Error   *Error                  `json:"error,omitempty"`
 }
 
 type CreateImagesEditsData struct {

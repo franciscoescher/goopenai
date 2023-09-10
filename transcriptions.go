@@ -15,8 +15,7 @@ type CreateTranscriptionsRequest struct {
 }
 
 type CreateTranscriptionsResponse struct {
-	Text  string `json:"text,omitempty"`
-	Error *Error `json:"error,omitempty"`
+	Text string `json:"text,omitempty"`
 }
 
 func (c *Client) CreateTranscriptionsRaw(ctx context.Context, r CreateTranscriptionsRequest) ([]byte, error) {

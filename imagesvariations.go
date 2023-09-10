@@ -16,7 +16,6 @@ type CreateImagesVariationsRequest struct {
 type CreateImagesVariationsResponse struct {
 	Created int                          `json:"created,omitempty"`
 	Data    []CreateImagesVariationsData `json:"data,omitempty"`
-	Error   *Error                       `json:"error,omitempty"`
 }
 
 type CreateImagesVariationsData struct {

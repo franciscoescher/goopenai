@@ -14,8 +14,7 @@ type CreateTranslationsRequest struct {
 }
 
 type CreateTranslationsResponse struct {
-	Text  string `json:"text,omitempty"`
-	Error *Error `json:"error,omitempty"`
+	Text string `json:"text,omitempty"`
 }
 
 func (c *Client) CreateTranslationsRaw(ctx context.Context, r CreateTranslationsRequest) ([]byte, error) {

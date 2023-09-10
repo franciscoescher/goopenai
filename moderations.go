@@ -14,7 +14,6 @@ type CreateModerationsResponse struct {
 	ID      string                    `json:"id,omitempty"`
 	Model   string                    `json:"model,omitempty"`
 	Results []CreateModerationsResult `json:"results,omitempty"`
-	Error   *Error                    `json:"error,omitempty"`
 }
 
 type CreateModerationsResult struct {

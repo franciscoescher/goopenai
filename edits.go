@@ -19,7 +19,6 @@ type CreateEditsResponse struct {
 	Created int                 `json:"created,omitempty"`
 	Choices []CreateEditsChoice `json:"choices,omitempty"`
 	Usage   CreateEditsUsage    `json:"usage,omitempty"`
-	Error   *Error              `json:"error,omitempty"`
 }
 
 type CreateEditsChoice struct {

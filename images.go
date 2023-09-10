@@ -16,7 +16,6 @@ type CreateImagesRequest struct {
 type CreateImagesResponse struct {
 	Created int                `json:"created,omitempty"`
 	Data    []CreateImagesData `json:"data,omitempty"`
-	Error   *Error             `json:"error,omitempty"`
 }
 
 type CreateImagesData struct {
