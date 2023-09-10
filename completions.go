@@ -5,62 +5,62 @@ import (
 	"encoding/json"
 )
 
-const COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions"
-
-type CreateCompletionsRequest struct {
-	Model            string            `json:"model,omitempty"`
-	Messages         []Message         `json:"messages,omitempty"`
-	Prompt           StrArray          `json:"prompt,omitempty"`
-	Suffix           string            `json:"suffix,omitempty"`
-	MaxTokens        int               `json:"max_tokens,omitempty"`
-	Temperature      float64           `json:"temperature,omitempty"`
-	TopP             float64           `json:"top_p,omitempty"`
-	N                int               `json:"n,omitempty"`
-	Stream           bool              `json:"stream,omitempty"`
-	LogProbs         int               `json:"logprobs,omitempty"`
-	Echo             bool              `json:"echo,omitempty"`
-	Stop             StrArray          `json:"stop,omitempty"`
-	PresencePenalty  float64           `json:"presence_penalty,omitempty"`
-	FrequencyPenalty float64           `json:"frequency_penalty,omitempty"`
-	BestOf           int               `json:"best_of,omitempty"`
-	LogitBias        map[string]string `json:"logit_bias,omitempty"`
-	User             string            `json:"user,omitempty"`
+type CreateChatCompletionsRequest struct {
+	Model            string               `json:"model,omitempty"`
+	Messages         []Message            `json:"messages,omitempty"`
+	Functions        []CompletionFunciton `json:"functions,omitempty"`
+	FunctionCall     *string              `json:"function_call,omitempty"`
+	Temperature      float64              `json:"temperature,omitempty"`
+	TopP             float64              `json:"top_p,omitempty"`
+	N                int                  `json:"n,omitempty"`
+	Stream           bool                 `json:"stream,omitempty"`
+	Stop             StrArray             `json:"stop,omitempty"`
+	MaxTokens        int                  `json:"max_tokens,omitempty"`
+	PresencePenalty  float64              `json:"presence_penalty,omitempty"`
+	FrequencyPenalty float64              `json:"frequency_penalty,omitempty"`
+	LogitBias        map[string]string    `json:"logit_bias,omitempty"`
+	User             string               `json:"user,omitempty"`
 }
 
-func (c *Client) CreateCompletionsRaw(ctx context.Context, r CreateCompletionsRequest) ([]byte, error) {
-	return c.Post(ctx, COMPLETIONS_URL, r)
+type CompletionFunciton struct {
+	Name        string `json:"name,omitempty"`
+	Description string `json:"description,omitempty"`
+	Parameters  []byte `json:"parameters,omitempty"`
 }
 
-func (c *Client) CreateCompletions(ctx context.Context, r CreateCompletionsRequest) (response CreateCompletionsResponse, err error) {
-	raw, err := c.CreateCompletionsRaw(ctx, r)
+type CreateChatCompletionsResponse struct {
+	ID      string                        `json:"id,omitempty"`
+	Object  string                        `json:"object,omitempty"`
+	Created int                           `json:"created,omitempty"`
+	Model   string                        `json:"model,omitempty"`
+	Choices []CreateChatCompletionsChoice `json:"choices,omitempty"`
+	Usage   CreateChatCompletionsUsave    `json:"usage,omitempty"`
+	Error   *Error                        `json:"error,omitempty"`
+}
+
+type CreateChatCompletionsChoice struct {
+	Index        int      `json:"index,omitempty"`
+	Message      *Message `json:"message,omitempty"`
+	Delta        *Message `json:"delta,omitempty"`
+	FinishReason string   `json:"finish_reason,omitempty"`
+}
+
+type CreateChatCompletionsUsave struct {
+	PromptTokens     int `json:"prompt_tokens,omitempty"`
+	CompletionTokens int `json:"completion_tokens,omitempty"`
+	TotalTokens      int `json:"total_tokens,omitempty"`
+}
+
+func (c *Client) CreateChatCompletionsRaw(ctx context.Context, r CreateChatCompletionsRequest) ([]byte, error) {
+	return c.Post(ctx, completionsUrl, r)
+}
+
+func (c *Client) CreateChatCompletions(ctx context.Context, r CreateChatCompletionsRequest) (response CreateChatCompletionsResponse, err error) {
+	raw, err := c.CreateChatCompletionsRaw(ctx, r)
 	if err != nil {
 		return response, err
 	}
 
 	err = json.Unmarshal(raw, &response)
 	return response, err
-}
-
-type CreateCompletionsResponse struct {
-	ID      string `json:"id,omitempty"`
-	Object  string `json:"object,omitempty"`
-	Created int    `json:"created,omitempty"`
-	Model   string `json:"model,omitempty"`
-	Choices []struct {
-		Message struct {
-			Role    string `json:"role,omitempty"`
-			Content string `json:"content,omitempty"`
-		} `json:"message"`
-		Text         string      `json:"text,omitempty"`
-		Index        int         `json:"index,omitempty"`
-		Logprobs     interface{} `json:"logprobs,omitempty"`
-		FinishReason string      `json:"finish_reason,omitempty"`
-	} `json:"choices,omitempty"`
-	Usage struct {
-		PromptTokens     int `json:"prompt_tokens,omitempty"`
-		CompletionTokens int `json:"completion_tokens,omitempty"`
-		TotalTokens      int `json:"total_tokens,omitempty"`
-	} `json:"usage,omitempty"`
-
-	Error *Error `json:"error,omitempty"`
 }

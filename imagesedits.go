@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 )
 
-const IMAGES_EDITS_URL = "https://api.openai.com/v1/images/edits"
-
 type CreateImagesEditsRequest struct {
 	Image          string `json:"image,omitempty"`
 	Mask           string `json:"mask,omitempty"`
@@ -17,8 +15,18 @@ type CreateImagesEditsRequest struct {
 	User           string `json:"user,omitempty"`
 }
 
+type CreateImagesEditsResponse struct {
+	Created int                     `json:"created,omitempty"`
+	Data    []CreateImagesEditsData `json:"data,omitempty"`
+	Error   *Error                  `json:"error,omitempty"`
+}
+
+type CreateImagesEditsData struct {
+	URL string `json:"url,omitempty"`
+}
+
 func (c *Client) CreateImagesEditsRaw(ctx context.Context, r CreateImagesEditsRequest) ([]byte, error) {
-	return c.Post(ctx, IMAGES_EDITS_URL, r)
+	return c.Post(ctx, imagesEditsUrl, r)
 }
 
 func (c *Client) CreateImagesEdits(ctx context.Context, r CreateImagesEditsRequest) (response CreateImagesEditsResponse, err error) {
@@ -29,13 +37,4 @@ func (c *Client) CreateImagesEdits(ctx context.Context, r CreateImagesEditsReque
 
 	err = json.Unmarshal(raw, &response)
 	return response, err
-}
-
-type CreateImagesEditsResponse struct {
-	Created int `json:"created,omitempty"`
-	Data    []struct {
-		URL string `json:"url,omitempty"`
-	} `json:"data,omitempty"`
-
-	Error *Error `json:"error,omitempty"`
 }

@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 )
 
-const TRANSCRIPTIONS_URL = "https://api.openai.com/v1/audio/transcriptions"
-
 type CreateTranscriptionsRequest struct {
 	File           string  `json:"file,omitempty"`
 	Model          string  `json:"model,omitempty"`
@@ -16,8 +14,13 @@ type CreateTranscriptionsRequest struct {
 	Language       string  `json:"language,omitempty"`
 }
 
+type CreateTranscriptionsResponse struct {
+	Text  string `json:"text,omitempty"`
+	Error *Error `json:"error,omitempty"`
+}
+
 func (c *Client) CreateTranscriptionsRaw(ctx context.Context, r CreateTranscriptionsRequest) ([]byte, error) {
-	return c.Post(ctx, TRANSCRIPTIONS_URL, r)
+	return c.Post(ctx, transcriptionsUrl, r)
 }
 
 func (c *Client) CreateTranscriptions(ctx context.Context, r CreateTranscriptionsRequest) (response CreateTranscriptionsResponse, err error) {
@@ -28,10 +31,4 @@ func (c *Client) CreateTranscriptions(ctx context.Context, r CreateTranscription
 
 	err = json.Unmarshal(raw, &response)
 	return response, err
-}
-
-type CreateTranscriptionsResponse struct {
-	Text string `json:"text,omitempty"`
-
-	Error *Error `json:"error,omitempty"`
 }

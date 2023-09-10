@@ -11,13 +11,13 @@ import (
 	"github.com/google/go-querystring/query"
 )
 
-// Asserts client follows client interface
-var _ ClientInterface = (*Client)(nil)
-
 type Client struct {
 	apiKey       string
 	Organization string
 }
+
+// Asserts client follows client interface
+var _ ClientInterface = (*Client)(nil)
 
 // NewClient creates a new client
 func NewClient(apiKey string, organization string) *Client {
@@ -92,17 +92,4 @@ func (c *Client) Call(ctx context.Context, method string, url string, body io.Re
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	return resp, err
-}
-
-// Error is the error standard response from the API
-type Error struct {
-	Message string      `json:"message,omitempty"`
-	Type    string      `json:"type,omitempty"`
-	Param   interface{} `json:"param,omitempty"`
-	Code    interface{} `json:"code,omitempty"`
-}
-
-type Message struct {
-	Role    string `json:"role,omitempty"`
-	Content string `json:"content,omitempty"`
 }

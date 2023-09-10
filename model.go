@@ -5,10 +5,16 @@ import (
 	"encoding/json"
 )
 
-const MODEL_URL = "https://api.openai.com/v1/models/"
+type RetrieveModelResponse struct {
+	ID          string   `json:"id,omitempty"`
+	Object      string   `json:"object,omitempty"`
+	OwnedBy     string   `json:"owned_by,omitempty"`
+	Permissions []string `json:"permissions,omitempty"`
+	Error       *Error   `json:"error,omitempty"`
+}
 
 func (c *Client) RetrieveModelRaw(ctx context.Context, id string) ([]byte, error) {
-	return c.Get(ctx, MODEL_URL+id, nil)
+	return c.Get(ctx, modelUrl+id, nil)
 }
 
 func (c *Client) RetrieveModel(ctx context.Context, id string) (response RetrieveModelResponse, err error) {
@@ -19,13 +25,4 @@ func (c *Client) RetrieveModel(ctx context.Context, id string) (response Retriev
 
 	err = json.Unmarshal(raw, &response)
 	return response, err
-}
-
-type RetrieveModelResponse struct {
-	ID          string   `json:"id,omitempty"`
-	Object      string   `json:"object,omitempty"`
-	OwnedBy     string   `json:"owned_by,omitempty"`
-	Permissions []string `json:"permissions,omitempty"`
-
-	Error *Error `json:"error,omitempty"`
 }

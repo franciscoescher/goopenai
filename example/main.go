@@ -41,7 +41,7 @@ func writeModels(client *goopenai.Client) {
 }
 
 func printCompletions(client *goopenai.Client) {
-	r := goopenai.CreateCompletionsRequest{
+	r := goopenai.CreateChatCompletionsRequest{
 		Model: "gpt-3.5-turbo",
 		Messages: []goopenai.Message{
 			{
@@ -52,7 +52,7 @@ func printCompletions(client *goopenai.Client) {
 		Temperature: 0.7,
 	}
 
-	completions, err := client.CreateCompletionsRaw(context.Background(), r)
+	completions, err := client.CreateChatCompletionsRaw(context.Background(), r)
 
 	if err != nil {
 		panic(err)

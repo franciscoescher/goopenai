@@ -11,11 +11,8 @@ type ClientInterface interface {
 	// RetrieveModel Retrieves a model instance, providing basic information about the model such as the owner and permissioning.
 	RetrieveModel(ctx context.Context, id string) (response RetrieveModelResponse, err error)
 
-	// CreateCompletions Creates a completion for the provided prompt and parameters
-	CreateCompletions(ctx context.Context, r CreateCompletionsRequest) (response CreateCompletionsResponse, err error)
-
-	// CreateChats Creates a completion for the chat message
-	CreateChats(ctx context.Context, r CreateChatsRequest) (response CreateChatsResponse, err error)
+	// CreateChatCompletions Creates a completion for the provided prompt and parameters
+	CreateChatCompletions(ctx context.Context, r CreateChatCompletionsRequest) (response CreateChatCompletionsResponse, err error)
 
 	// CreateEdits Creates a new edit for the provided input, instruction, and parameters.
 	CreateEdits(ctx context.Context, r CreateEditsRequest) (response CreateEditsResponse, err error)
