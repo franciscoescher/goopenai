@@ -20,6 +20,11 @@ type CreateChatCompletionsRequest struct {
 	FrequencyPenalty float64              `json:"frequency_penalty,omitempty"`
 	LogitBias        map[string]string    `json:"logit_bias,omitempty"`
 	User             string               `json:"user,omitempty"`
+	ResponseFormat   ResponseFormat       `json:"response_format,omitempty"`
+}
+
+type ResponseFormat struct {
+	Type string `json:"type"`
 }
 
 type CompletionFunciton struct {
@@ -51,6 +56,9 @@ type CreateChatCompletionsUsave struct {
 }
 
 func (c *Client) CreateChatCompletionsRaw(ctx context.Context, r CreateChatCompletionsRequest) ([]byte, error) {
+	if r.ResponseFormat.Type == "" {
+		r.ResponseFormat.Type = "text"
+	}
 	return c.Post(ctx, completionsUrl, r)
 }
 

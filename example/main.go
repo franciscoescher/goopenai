@@ -42,14 +42,17 @@ func writeModels(client *goopenai.Client) {
 
 func printCompletions(client *goopenai.Client) {
 	r := goopenai.CreateChatCompletionsRequest{
-		Model: "gpt-3.5-turbo",
+		Model: "gpt-4-1106-preview",
 		Messages: []goopenai.Message{
 			{
 				Role:    "user",
-				Content: "Say this is a test!",
+				Content: "Respond with a json with your nickname and model data",
 			},
 		},
 		Temperature: 0.7,
+		ResponseFormat: goopenai.ResponseFormat{
+			Type: "json_object",
+		},
 	}
 
 	completions, err := client.CreateChatCompletionsRaw(context.Background(), r)
