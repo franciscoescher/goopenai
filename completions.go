@@ -21,6 +21,7 @@ type CreateChatCompletionsRequest struct {
 	LogitBias        map[string]string    `json:"logit_bias,omitempty"`
 	User             string               `json:"user,omitempty"`
 	ResponseFormat   ResponseFormat       `json:"response_format,omitempty"`
+	Seed             int                  `json:"seed,omitempty"`
 }
 
 type ResponseFormat struct {
@@ -34,12 +35,13 @@ type CompletionFunciton struct {
 }
 
 type CreateChatCompletionsResponse struct {
-	ID      string                        `json:"id,omitempty"`
-	Object  string                        `json:"object,omitempty"`
-	Created int                           `json:"created,omitempty"`
-	Model   string                        `json:"model,omitempty"`
-	Choices []CreateChatCompletionsChoice `json:"choices,omitempty"`
-	Usage   CreateChatCompletionsUsave    `json:"usage,omitempty"`
+	ID                string                        `json:"id,omitempty"`
+	Object            string                        `json:"object,omitempty"`
+	Created           int                           `json:"created,omitempty"`
+	Model             string                        `json:"model,omitempty"`
+	Choices           []CreateChatCompletionsChoice `json:"choices,omitempty"`
+	Usage             CreateChatCompletionsUsave    `json:"usage,omitempty"`
+	SystemFingerprint string                        `json:"system_fingerprint,omitempty"`
 }
 
 type CreateChatCompletionsChoice struct {
