@@ -42,14 +42,14 @@ type CreateModerationsCategoriesScores struct {
 	ViolenceGraphic float64 `json:"violence/graphic,omitempty"`
 }
 
-func (c *Client) CreateModerationsRaw(ctx context.Context, r CreateModerationsRequest) ([]byte, error) {
+func (c *Client) CreateModerationsRaw(ctx context.Context, r *CreateModerationsRequest) ([]byte, error) {
 	return c.Post(ctx, moderationsUrl, r)
 }
 
-func (c *Client) CreateModerations(ctx context.Context, r CreateModerationsRequest) (response CreateModerationsResponse, err error) {
+func (c *Client) CreateModerations(ctx context.Context, r *CreateModerationsRequest) (response *CreateModerationsResponse, err error) {
 	raw, err := c.CreateModerationsRaw(ctx, r)
 	if err != nil {
-		return response, err
+		return nil, err
 	}
 
 	err = json.Unmarshal(raw, &response)

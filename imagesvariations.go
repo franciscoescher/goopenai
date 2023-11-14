@@ -22,14 +22,14 @@ type CreateImagesVariationsData struct {
 	URL string `json:"url,omitempty"`
 }
 
-func (c *Client) CreateImagesVariationsRaw(ctx context.Context, r CreateImagesVariationsRequest) ([]byte, error) {
+func (c *Client) CreateImagesVariationsRaw(ctx context.Context, r *CreateImagesVariationsRequest) ([]byte, error) {
 	return c.Post(ctx, imagesVariationsUrl, r)
 }
 
-func (c *Client) CreateImagesVariations(ctx context.Context, r CreateImagesVariationsRequest) (response CreateImagesVariationsResponse, err error) {
+func (c *Client) CreateImagesVariations(ctx context.Context, r *CreateImagesVariationsRequest) (response *CreateImagesVariationsResponse, err error) {
 	raw, err := c.CreateImagesVariationsRaw(ctx, r)
 	if err != nil {
-		return response, err
+		return nil, err
 	}
 
 	err = json.Unmarshal(raw, &response)

@@ -18,14 +18,14 @@ type CreateTranscriptionsResponse struct {
 	Text string `json:"text,omitempty"`
 }
 
-func (c *Client) CreateTranscriptionsRaw(ctx context.Context, r CreateTranscriptionsRequest) ([]byte, error) {
+func (c *Client) CreateTranscriptionsRaw(ctx context.Context, r *CreateTranscriptionsRequest) ([]byte, error) {
 	return c.Post(ctx, transcriptionsUrl, r)
 }
 
-func (c *Client) CreateTranscriptions(ctx context.Context, r CreateTranscriptionsRequest) (response CreateTranscriptionsResponse, err error) {
+func (c *Client) CreateTranscriptions(ctx context.Context, r *CreateTranscriptionsRequest) (response *CreateTranscriptionsResponse, err error) {
 	raw, err := c.CreateTranscriptionsRaw(ctx, r)
 	if err != nil {
-		return response, err
+		return nil, err
 	}
 
 	err = json.Unmarshal(raw, &response)

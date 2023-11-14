@@ -30,14 +30,14 @@ type CreateEmbeddingsUsage struct {
 	TotalTokens  int `json:"total_tokens,omitempty"`
 }
 
-func (c *Client) CreateEmbeddingsRaw(ctx context.Context, r CreateEmbeddingsRequest) ([]byte, error) {
+func (c *Client) CreateEmbeddingsRaw(ctx context.Context, r *CreateEmbeddingsRequest) ([]byte, error) {
 	return c.Post(ctx, embeddingsUrl, r)
 }
 
-func (c *Client) CreateEmbeddings(ctx context.Context, r CreateEmbeddingsRequest) (response CreateEmbeddingsResponse, err error) {
+func (c *Client) CreateEmbeddings(ctx context.Context, r *CreateEmbeddingsRequest) (response *CreateEmbeddingsResponse, err error) {
 	raw, err := c.CreateEmbeddingsRaw(ctx, r)
 	if err != nil {
-		return response, err
+		return nil, err
 	}
 
 	err = json.Unmarshal(raw, &response)

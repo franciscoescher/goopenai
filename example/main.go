@@ -55,7 +55,7 @@ func printCompletions(client *goopenai.Client) {
 		},
 	}
 
-	completions, err := client.CreateChatCompletionsRaw(context.Background(), r)
+	completions, err := client.CreateChatCompletionsRaw(context.Background(), &r)
 
 	if err != nil {
 		panic(err)

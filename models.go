@@ -21,10 +21,10 @@ func (c *Client) ListModelsRaw(ctx context.Context) ([]byte, error) {
 	return c.Get(ctx, modelsUrl, nil)
 }
 
-func (c *Client) ListModels(ctx context.Context) (response ListModelsResponse, err error) {
+func (c *Client) ListModels(ctx context.Context) (response *ListModelsResponse, err error) {
 	raw, err := c.ListModelsRaw(ctx)
 	if err != nil {
-		return response, err
+		return nil, err
 	}
 
 	err = json.Unmarshal(raw, &response)

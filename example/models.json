@@ -290,12 +290,6 @@
       "owned_by": "system"
     },
     {
-      "id": "whisper-1",
-      "object": "model",
-      "created": 1677532384,
-      "owned_by": "openai-internal"
-    },
-    {
       "id": "gpt-3.5-turbo-instruct-0914",
       "object": "model",
       "created": 1694122472,
@@ -318,12 +312,6 @@
       "object": "model",
       "created": 1649364042,
       "owned_by": "openai"
-    },
-    {
-      "id": "canary-whisper",
-      "object": "model",
-      "created": 1699656801,
-      "owned_by": "system"
     },
     {
       "id": "ada-similarity",
@@ -362,10 +350,22 @@
       "owned_by": "openai"
     },
     {
+      "id": "canary-whisper",
+      "object": "model",
+      "created": 1699656801,
+      "owned_by": "system"
+    },
+    {
       "id": "gpt-3.5-turbo-0301",
       "object": "model",
       "created": 1677649963,
       "owned_by": "openai"
+    },
+    {
+      "id": "whisper-1",
+      "object": "model",
+      "created": 1677532384,
+      "owned_by": "openai-internal"
     },
     {
       "id": "text-search-curie-doc-001",

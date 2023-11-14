@@ -24,14 +24,14 @@ type CreateImagesEditsData struct {
 	URL string `json:"url,omitempty"`
 }
 
-func (c *Client) CreateImagesEditsRaw(ctx context.Context, r CreateImagesEditsRequest) ([]byte, error) {
+func (c *Client) CreateImagesEditsRaw(ctx context.Context, r *CreateImagesEditsRequest) ([]byte, error) {
 	return c.Post(ctx, imagesEditsUrl, r)
 }
 
-func (c *Client) CreateImagesEdits(ctx context.Context, r CreateImagesEditsRequest) (response CreateImagesEditsResponse, err error) {
+func (c *Client) CreateImagesEdits(ctx context.Context, r *CreateImagesEditsRequest) (response *CreateImagesEditsResponse, err error) {
 	raw, err := c.CreateImagesEditsRaw(ctx, r)
 	if err != nil {
-		return response, err
+		return nil, err
 	}
 
 	err = json.Unmarshal(raw, &response)

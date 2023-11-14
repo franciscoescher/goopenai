@@ -32,14 +32,14 @@ type CreateEditsUsage struct {
 	TotalTokens      int `json:"total_tokens,omitempty"`
 }
 
-func (c *Client) CreateEditsRaw(ctx context.Context, r CreateEditsRequest) ([]byte, error) {
+func (c *Client) CreateEditsRaw(ctx context.Context, r *CreateEditsRequest) ([]byte, error) {
 	return c.Post(ctx, editsUrl, r)
 }
 
-func (c *Client) CreateEdits(ctx context.Context, r CreateEditsRequest) (response CreateEditsResponse, err error) {
+func (c *Client) CreateEdits(ctx context.Context, r *CreateEditsRequest) (response *CreateEditsResponse, err error) {
 	raw, err := c.CreateEditsRaw(ctx, r)
 	if err != nil {
-		return response, err
+		return nil, err
 	}
 
 	err = json.Unmarshal(raw, &response)

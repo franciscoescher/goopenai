@@ -38,7 +38,7 @@ func main() {
 
 	client := goopenai.NewClient(apiKey, organization)
 
-	r := goopenai.CreateChatCompletionsRequest{
+	r := &goopenai.CreateChatCompletionsRequest{
 		Model: "gpt-3.5-turbo",
 		Messages: []goopenai.Message{
 			{

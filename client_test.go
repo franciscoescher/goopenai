@@ -31,7 +31,7 @@ func Test_Call(t *testing.T) {
 	})
 	defer mocked.Controller.Finish()
 
-	expected := &http.Response{Status: "200 OK"}
+	expected := &http.Response{Status: "200 OK", StatusCode: 200}
 	mocked.HttpClient.EXPECT().Do(newRequestMatcher(mocked.Request)).Return(expected, nil)
 
 	response, err := mocked.Client.Call(ctx, method, url, bytes.NewReader(rJson))

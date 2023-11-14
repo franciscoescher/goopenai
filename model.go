@@ -16,10 +16,10 @@ func (c *Client) RetrieveModelRaw(ctx context.Context, id string) ([]byte, error
 	return c.Get(ctx, modelUrl+id, nil)
 }
 
-func (c *Client) RetrieveModel(ctx context.Context, id string) (response RetrieveModelResponse, err error) {
+func (c *Client) RetrieveModel(ctx context.Context, id string) (response *RetrieveModelResponse, err error) {
 	raw, err := c.RetrieveModelRaw(ctx, id)
 	if err != nil {
-		return response, err
+		return nil, err
 	}
 
 	err = json.Unmarshal(raw, &response)

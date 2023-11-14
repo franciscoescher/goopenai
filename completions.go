@@ -57,17 +57,17 @@ type CreateChatCompletionsUsave struct {
 	TotalTokens      int `json:"total_tokens,omitempty"`
 }
 
-func (c *Client) CreateChatCompletionsRaw(ctx context.Context, r CreateChatCompletionsRequest) ([]byte, error) {
+func (c *Client) CreateChatCompletionsRaw(ctx context.Context, r *CreateChatCompletionsRequest) ([]byte, error) {
 	if r.ResponseFormat.Type == "" {
 		r.ResponseFormat.Type = "text"
 	}
 	return c.Post(ctx, completionsUrl, r)
 }
 
-func (c *Client) CreateChatCompletions(ctx context.Context, r CreateChatCompletionsRequest) (response CreateChatCompletionsResponse, err error) {
+func (c *Client) CreateChatCompletions(ctx context.Context, r *CreateChatCompletionsRequest) (response *CreateChatCompletionsResponse, err error) {
 	raw, err := c.CreateChatCompletionsRaw(ctx, r)
 	if err != nil {
-		return response, err
+		return nil, err
 	}
 
 	err = json.Unmarshal(raw, &response)

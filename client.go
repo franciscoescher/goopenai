@@ -39,12 +39,12 @@ func (c *Client) Post(ctx context.Context, url string, input any) (response []by
 
 	rJson, err := json.Marshal(input)
 	if err != nil {
-		return response, err
+		return nil, err
 	}
 
 	resp, err := c.Call(ctx, http.MethodPost, url, bytes.NewReader(rJson))
 	if err != nil {
-		return response, err
+		return nil, err
 	}
 	defer resp.Body.Close()
 
@@ -73,7 +73,7 @@ func (c *Client) Get(ctx context.Context, url string, input any) (response []byt
 
 	resp, err := c.Call(ctx, http.MethodGet, url, nil)
 	if err != nil {
-		return response, err
+		return nil, err
 	}
 	defer resp.Body.Close()
 
@@ -85,16 +85,18 @@ func (c *Client) Get(ctx context.Context, url string, input any) (response []byt
 	return checkError(response)
 }
 
+type ErrorResponse struct {
+	Error *Error `json:"error,omitempty"`
+}
+
 func checkError(response []byte) ([]byte, error) {
-	var errorResponse struct {
-		Error *Error `json:"error,omitempty"`
-	}
-	err := json.Unmarshal(response, &errorResponse)
+	r := &ErrorResponse{}
+	err := json.Unmarshal(response, r)
 	if err != nil {
 		return nil, err
 	}
-	if errorResponse.Error != nil {
-		return nil, errorResponse.Error
+	if r.Error != nil {
+		return nil, r.Error
 	}
 	return response, nil
 }
@@ -103,7 +105,7 @@ func checkError(response []byte) ([]byte, error) {
 func (c *Client) Call(ctx context.Context, method string, url string, body io.Reader) (response *http.Response, err error) {
 	req, err := http.NewRequestWithContext(ctx, method, url, body)
 	if err != nil {
-		return response, err
+		return nil, err
 	}
 
 	sb := strings.Builder{}
