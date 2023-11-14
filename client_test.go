@@ -37,7 +37,7 @@ func TestCall(t *testing.T) {
 		defer ctrl.Finish()
 		mockHttpClient := NewMockHttpClient(ctrl)
 		expected := &http.Response{Status: "200 OK"}
-		mockHttpClient.EXPECT().Do(gomock.Any()).Return(expected, nil)
+		mockHttpClient.EXPECT().Do(RequestMatcher{req}).Return(expected, nil)
 
 		// calls client
 		c := &Client{
@@ -51,4 +51,39 @@ func TestCall(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(t, expected, response)
 	})
+}
+
+type RequestMatcher struct {
+	req *http.Request
+}
+
+func (m RequestMatcher) Matches(x interface{}) bool {
+	// check x type
+	parsed, ok := x.(*http.Request)
+	if !ok {
+		return false
+	}
+	if m.req.Method != parsed.Method {
+		return false
+	}
+	if m.req.URL.String() != parsed.URL.String() {
+		return false
+	}
+	if m.req.Header.Get("Authorization") != parsed.Header.Get("Authorization") {
+		return false
+	}
+	if m.req.Header.Get("Content-Type") != parsed.Header.Get("Content-Type") {
+		return false
+	}
+	if m.req.Header.Get("OpenAI-Organization") != parsed.Header.Get("OpenAI-Organization") {
+		return false
+	}
+	if m.req.Body != parsed.Body {
+		return false
+	}
+	return true
+}
+
+func (m RequestMatcher) String() string {
+	return "is an http request with the same method, url, required headers and body"
 }
