@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"io"
 	"net/http"
 	"testing"
 
@@ -14,38 +15,27 @@ import (
 func TestCall(t *testing.T) {
 	t.Run("Call", func(t *testing.T) {
 		ctx := context.Background()
-		url := "/test/url"
+		url := "/fake-url"
 		method := http.MethodPost
-		org := "org"
-		apiKey := "api-key"
 
-		// prepares request body
 		b := map[string]string{"name": "test"}
 		rJson, err := json.Marshal(b)
 		require.NoError(t, err)
 		body := bytes.NewReader(rJson)
 
-		// prepares request
-		req, err := http.NewRequestWithContext(ctx, method, url, body)
-		require.NoError(t, err)
-		req.Header.Add("Authorization", "Bearer "+apiKey)
-		req.Header.Add("Content-Type", "application/json")
-		req.Header.Add("OpenAI-Organization", org)
+		mocked := getMockedClient(getMockedClientParams{
+			T:       t,
+			Context: ctx,
+			URL:     url,
+			Method:  method,
+			Body:    body,
+		})
+		defer mocked.Controller.Finish()
 
-		// mocks http client
-		ctrl := gomock.NewController(t)
-		defer ctrl.Finish()
-		mockHttpClient := NewMockHttpClient(ctrl)
 		expected := &http.Response{Status: "200 OK"}
-		mockHttpClient.EXPECT().Do(RequestMatcher{req}).Return(expected, nil)
+		mocked.HttpClient.EXPECT().Do(requestMatcher{mocked.Request}).Return(expected, nil)
 
-		// calls client
-		c := &Client{
-			apiKey:       apiKey,
-			organization: org,
-			client:       mockHttpClient,
-		}
-		response, err := c.Call(ctx, method, url, body)
+		response, err := mocked.Client.Call(ctx, method, url, body)
 
 		// asserts
 		require.NoError(t, err)
@@ -53,11 +43,53 @@ func TestCall(t *testing.T) {
 	})
 }
 
-type RequestMatcher struct {
+type getMockedClientParams struct {
+	T       *testing.T
+	Context context.Context
+	URL     string
+	Method  string
+	Body    io.Reader
+}
+
+type getMockedClientResponse struct {
+	Controller *gomock.Controller
+	Client     *Client
+	Request    *http.Request
+	HttpClient *MockHttpClient
+}
+
+func getMockedClient(p getMockedClientParams) *getMockedClientResponse {
+	apiKey := "fake-api-key"
+	org := "fake-org"
+
+	// prepares request
+	req, err := http.NewRequestWithContext(p.Context, p.Method, p.URL, p.Body)
+	require.NoError(p.T, err)
+	req.Header.Add("Authorization", "Bearer "+apiKey)
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("OpenAI-Organization", org)
+
+	// mocks http client
+	ctrl := gomock.NewController(p.T)
+	defer ctrl.Finish()
+	mockHttpClient := NewMockHttpClient(ctrl)
+
+	// calls client
+	c := &Client{
+		apiKey:       apiKey,
+		organization: org,
+		client:       mockHttpClient,
+	}
+	return &getMockedClientResponse{
+		ctrl, c, req, mockHttpClient,
+	}
+}
+
+type requestMatcher struct {
 	req *http.Request
 }
 
-func (m RequestMatcher) Matches(x interface{}) bool {
+func (m requestMatcher) Matches(x interface{}) bool {
 	// check x type
 	parsed, ok := x.(*http.Request)
 	if !ok {
@@ -84,6 +116,6 @@ func (m RequestMatcher) Matches(x interface{}) bool {
 	return true
 }
 
-func (m RequestMatcher) String() string {
+func (m requestMatcher) String() string {
 	return "is an http request with the same method, url, required headers and body"
 }
