@@ -36,7 +36,7 @@ func TestCall(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 		mockHttpClient := NewMockHttpClient(ctrl)
-		expected := &http.Response{}
+		expected := &http.Response{Status: "200 OK"}
 		mockHttpClient.EXPECT().Do(gomock.Any()).Return(expected, nil)
 
 		// calls client
