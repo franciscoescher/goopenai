@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"io"
 	"net/http"
 	"testing"
@@ -91,6 +92,41 @@ func Test_CreateChatCompletions_Error(t *testing.T) {
 
 	expectedHttpResponse := &http.Response{Status: "500 OK", StatusCode: 200, Body: responseBody}
 	mocked.HttpClient.EXPECT().Do(newRequestMatcher(mocked.Request)).Return(expectedHttpResponse, nil)
+
+	response, err := mocked.Client.CreateChatCompletions(ctx, &b)
+
+	// asserts
+	require.Error(t, err)
+	require.Nil(t, response)
+}
+
+func Test_CreateChatCompletions_Failure(t *testing.T) {
+	ctx := context.Background()
+	method := http.MethodPost
+
+	b := CreateChatCompletionsRequest{
+		Model: "gpt-4",
+		Messages: []Message{
+			{Role: "user", Content: "Hi!"},
+		},
+		ResponseFormat: ResponseFormat{
+			Type: "text",
+		},
+	}
+	reqJson, err := json.Marshal(b)
+	require.NoError(t, err)
+	body := bytes.NewReader(reqJson)
+
+	mocked := getMockedClient(getMockedClientParams{
+		T:       t,
+		Context: ctx,
+		URL:     completionsUrl,
+		Method:  method,
+		Body:    body,
+	})
+	defer mocked.Controller.Finish()
+
+	mocked.HttpClient.EXPECT().Do(newRequestMatcher(mocked.Request)).Return(nil, errors.New("error"))
 
 	response, err := mocked.Client.CreateChatCompletions(ctx, &b)
 
