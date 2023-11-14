@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"testing"
@@ -12,35 +13,32 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestCall(t *testing.T) {
-	t.Run("Call", func(t *testing.T) {
-		ctx := context.Background()
-		url := "/fake-url"
-		method := http.MethodPost
+func Test_Call(t *testing.T) {
+	ctx := context.Background()
+	url := "/fake-url"
+	method := http.MethodPost
 
-		b := map[string]string{"name": "test"}
-		rJson, err := json.Marshal(b)
-		require.NoError(t, err)
-		body := bytes.NewReader(rJson)
+	b := map[string]string{"name": "test"}
+	rJson, err := json.Marshal(b)
+	require.NoError(t, err)
 
-		mocked := getMockedClient(getMockedClientParams{
-			T:       t,
-			Context: ctx,
-			URL:     url,
-			Method:  method,
-			Body:    body,
-		})
-		defer mocked.Controller.Finish()
-
-		expected := &http.Response{Status: "200 OK"}
-		mocked.HttpClient.EXPECT().Do(requestMatcher{mocked.Request}).Return(expected, nil)
-
-		response, err := mocked.Client.Call(ctx, method, url, body)
-
-		// asserts
-		require.NoError(t, err)
-		require.Equal(t, expected, response)
+	mocked := getMockedClient(getMockedClientParams{
+		T:       t,
+		Context: ctx,
+		URL:     url,
+		Method:  method,
+		Body:    bytes.NewReader(rJson),
 	})
+	defer mocked.Controller.Finish()
+
+	expected := &http.Response{Status: "200 OK"}
+	mocked.HttpClient.EXPECT().Do(newRequestMatcher(mocked.Request)).Return(expected, nil)
+
+	response, err := mocked.Client.Call(ctx, method, url, bytes.NewReader(rJson))
+
+	// asserts
+	require.NoError(t, err)
+	require.Equal(t, expected, response)
 }
 
 type getMockedClientParams struct {
@@ -89,6 +87,13 @@ type requestMatcher struct {
 	req *http.Request
 }
 
+// asserts interface
+var _ gomock.Matcher = (*requestMatcher)(nil)
+
+func newRequestMatcher(req *http.Request) gomock.Matcher {
+	return &requestMatcher{req: req}
+}
+
 func (m requestMatcher) Matches(x interface{}) bool {
 	// check x type
 	parsed, ok := x.(*http.Request)
@@ -110,12 +115,21 @@ func (m requestMatcher) Matches(x interface{}) bool {
 	if m.req.Header.Get("OpenAI-Organization") != parsed.Header.Get("OpenAI-Organization") {
 		return false
 	}
-	if m.req.Body != parsed.Body {
-		return false
-	}
-	return true
+
+	buf1, _ := io.ReadAll(m.req.Body)
+	buf2, _ := io.ReadAll(parsed.Body)
+	return bytes.Equal(buf1, buf2)
 }
 
 func (m requestMatcher) String() string {
-	return "is an http request with the same method, url, required headers and body"
+	bodyString, _ := io.ReadAll(m.req.Body)
+	fields := map[string]string{
+		"\nMethod":                      m.req.Method,
+		"\nURL":                         m.req.URL.String(),
+		"\nBody":                        string(bodyString),
+		"\nHeader[Authorization]":       m.req.Header.Get("Authorization"),
+		"\nHeader[Content-Type]":        m.req.Header.Get("Content-Type"),
+		"\nHeader[OpenAI-Organization]": m.req.Header.Get("OpenAI-Organization"),
+	}
+	return fmt.Sprintf("is an http request matching the data: %v", fields)
 }
