@@ -11,9 +11,14 @@ import (
 	"github.com/google/go-querystring/query"
 )
 
+type HttpClient interface {
+	Do(req *http.Request) (*http.Response, error)
+}
+
 type Client struct {
+	client       HttpClient
 	apiKey       string
-	Organization string
+	organization string
 }
 
 // Asserts client follows client interface
@@ -23,7 +28,8 @@ var _ ClientInterface = (*Client)(nil)
 func NewClient(apiKey string, organization string) *Client {
 	return &Client{
 		apiKey:       apiKey,
-		Organization: organization,
+		organization: organization,
+		client:       &http.Client{},
 	}
 }
 
@@ -107,11 +113,10 @@ func (c *Client) Call(ctx context.Context, method string, url string, body io.Re
 
 	req.Header.Add("Authorization", authHeader)
 	req.Header.Add("Content-Type", "application/json")
-	if c.Organization != "" {
-		req.Header.Add("OpenAI-Organization", c.Organization)
+	if c.organization != "" {
+		req.Header.Add("OpenAI-Organization", c.organization)
 	}
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	resp, err := c.client.Do(req)
 	return resp, err
 }
