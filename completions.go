@@ -20,7 +20,7 @@ type CreateChatCompletionsRequest struct {
 	ResponseFormat   *ResponseFormat   `json:"response_format,omitempty"`
 	Seed             *int              `json:"seed,omitempty"`
 	Tools            []Tools           `json:"tools,omitempty"`
-	ToolsChoice      *ToolsChoice      `json:"tools_choice,omitempty"`
+	ToolChoice       *ToolChoice       `json:"tool_choice,omitempty"`
 	User             *string           `json:"user,omitempty"`
 
 	// FunctionCall is deprecated in favor of Tools
@@ -29,12 +29,12 @@ type CreateChatCompletionsRequest struct {
 	Functions []CompletionFunciton `json:"functions,omitempty"`
 }
 
-type ToolsChoice struct {
-	String *string            `json:"string,omitempty"`
-	Object *ToolsChoiceObject `json:"object,omitempty"`
+type ToolChoice struct {
+	String *string           `json:"string,omitempty"`
+	Object *ToolChoiceObject `json:"object,omitempty"`
 }
 
-func (c *ToolsChoice) MarshalJSON() ([]byte, error) {
+func (c *ToolChoice) MarshalJSON() ([]byte, error) {
 	if c == nil {
 		return nil, nil
 	}
@@ -44,7 +44,7 @@ func (c *ToolsChoice) MarshalJSON() ([]byte, error) {
 	return json.Marshal(c.Object)
 }
 
-type ToolsChoiceObject struct {
+type ToolChoiceObject struct {
 	Type     string        `json:"type"`
 	Function toolsFunction `json:"function"`
 }
