@@ -8,7 +8,7 @@ Implemented methods can be found in the Interface.go file.
 
 ## Installation
 
-    go get github.com/franciscoescher/goopenai
+    go get github.com/franciscoescher/goopenai/v3
 
 ## Usage
 
