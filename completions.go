@@ -6,22 +6,62 @@ import (
 )
 
 type CreateChatCompletionsRequest struct {
-	Model            string               `json:"model,omitempty"`
-	Messages         []Message            `json:"messages,omitempty"`
-	Functions        []CompletionFunciton `json:"functions,omitempty"`
-	FunctionCall     *string              `json:"function_call,omitempty"`
-	Temperature      float64              `json:"temperature,omitempty"`
-	TopP             float64              `json:"top_p,omitempty"`
-	N                int                  `json:"n,omitempty"`
-	Stream           bool                 `json:"stream,omitempty"`
-	Stop             StrArray             `json:"stop,omitempty"`
-	MaxTokens        int                  `json:"max_tokens,omitempty"`
-	PresencePenalty  float64              `json:"presence_penalty,omitempty"`
-	FrequencyPenalty float64              `json:"frequency_penalty,omitempty"`
-	LogitBias        map[string]string    `json:"logit_bias,omitempty"`
-	User             string               `json:"user,omitempty"`
-	ResponseFormat   ResponseFormat       `json:"response_format,omitempty"`
-	Seed             int                  `json:"seed,omitempty"`
+	Model            string            `json:"model,omitempty"`
+	Messages         []Message         `json:"messages,omitempty"`
+	Temperature      float64           `json:"temperature,omitempty"`
+	TopP             *float64          `json:"top_p,omitempty"`
+	N                *int              `json:"n,omitempty"`
+	Stream           *bool             `json:"stream,omitempty"`
+	Stop             StrArray          `json:"stop,omitempty"`
+	MaxTokens        *int              `json:"max_tokens,omitempty"`
+	PresencePenalty  *float64          `json:"presence_penalty,omitempty"`
+	FrequencyPenalty *float64          `json:"frequency_penalty,omitempty"`
+	LogitBias        map[string]string `json:"logit_bias,omitempty"`
+	ResponseFormat   *ResponseFormat   `json:"response_format,omitempty"`
+	Seed             *int              `json:"seed,omitempty"`
+	Tools            []Tools           `json:"tools,omitempty"`
+	ToolsChoice      *ToolsChoice      `json:"tools_choice,omitempty"`
+	User             *string           `json:"user,omitempty"`
+
+	// FunctionCall is deprecated in favor of Tools
+	FunctionCall *string `json:"function_call,omitempty"`
+	// Functions is deprecated in favor of Tools
+	Functions []CompletionFunciton `json:"functions,omitempty"`
+}
+
+type ToolsChoice struct {
+	String *string            `json:"string,omitempty"`
+	Object *ToolsChoiceObject `json:"object,omitempty"`
+}
+
+func (c *ToolsChoice) MarshalJSON() ([]byte, error) {
+	if c == nil {
+		return nil, nil
+	}
+	if c.String != nil && *c.String != "" {
+		return json.Marshal(c.String)
+	}
+	return json.Marshal(c.Object)
+}
+
+type ToolsChoiceObject struct {
+	Type     string        `json:"type"`
+	Function toolsFunction `json:"function"`
+}
+
+type toolsFunction struct {
+	Name string `json:"name"`
+}
+
+type Tools struct {
+	Type     string   `json:"type"`
+	Function Function `json:"function"`
+}
+
+type Function struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Parameters  []byte `json:"parameters"`
 }
 
 type ResponseFormat struct {

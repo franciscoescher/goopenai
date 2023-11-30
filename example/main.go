@@ -50,7 +50,7 @@ func printCompletions(client *goopenai.Client) {
 			},
 		},
 		Temperature: 0.7,
-		ResponseFormat: goopenai.ResponseFormat{
+		ResponseFormat: &goopenai.ResponseFormat{
 			Type: "json_object",
 		},
 	}

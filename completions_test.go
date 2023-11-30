@@ -21,7 +21,7 @@ func Test_CreateChatCompletions_OK(t *testing.T) {
 		Messages: []Message{
 			{Role: "user", Content: "Hi!"},
 		},
-		ResponseFormat: ResponseFormat{
+		ResponseFormat: &ResponseFormat{
 			Type: "text",
 		},
 	}
@@ -62,7 +62,7 @@ func Test_CreateChatCompletions_Error(t *testing.T) {
 		Messages: []Message{
 			{Role: "user", Content: "Hi!"},
 		},
-		ResponseFormat: ResponseFormat{
+		ResponseFormat: &ResponseFormat{
 			Type: "text",
 		},
 	}
@@ -109,7 +109,7 @@ func Test_CreateChatCompletions_Failure(t *testing.T) {
 		Messages: []Message{
 			{Role: "user", Content: "Hi!"},
 		},
-		ResponseFormat: ResponseFormat{
+		ResponseFormat: &ResponseFormat{
 			Type: "text",
 		},
 	}
