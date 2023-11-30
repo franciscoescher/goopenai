@@ -98,9 +98,6 @@ type CreateChatCompletionsUsave struct {
 }
 
 func (c *Client) CreateChatCompletionsRaw(ctx context.Context, r *CreateChatCompletionsRequest) ([]byte, error) {
-	if r.ResponseFormat.Type == "" {
-		r.ResponseFormat.Type = "text"
-	}
 	return c.Post(ctx, completionsUrl, r)
 }
 
