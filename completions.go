@@ -46,10 +46,10 @@ func (c *ToolChoice) MarshalJSON() ([]byte, error) {
 
 type ToolChoiceObject struct {
 	Type     string        `json:"type"`
-	Function toolsFunction `json:"function"`
+	Function ToolsFunction `json:"function"`
 }
 
-type toolsFunction struct {
+type ToolsFunction struct {
 	Name string `json:"name"`
 }
 
