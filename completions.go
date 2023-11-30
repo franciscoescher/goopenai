@@ -76,12 +76,12 @@ type CompletionFunciton struct {
 
 type CreateChatCompletionsResponse struct {
 	ID                string                        `json:"id,omitempty"`
-	Object            string                        `json:"object,omitempty"`
+	Choices           []CreateChatCompletionsChoice `json:"choices,omitempty"`
 	Created           int                           `json:"created,omitempty"`
 	Model             string                        `json:"model,omitempty"`
-	Choices           []CreateChatCompletionsChoice `json:"choices,omitempty"`
-	Usage             CreateChatCompletionsUsave    `json:"usage,omitempty"`
 	SystemFingerprint string                        `json:"system_fingerprint,omitempty"`
+	Object            string                        `json:"object,omitempty"`
+	Usage             CreateChatCompletionsUsave    `json:"usage,omitempty"`
 }
 
 type CreateChatCompletionsChoice struct {
@@ -92,8 +92,8 @@ type CreateChatCompletionsChoice struct {
 }
 
 type CreateChatCompletionsUsave struct {
-	PromptTokens     int `json:"prompt_tokens,omitempty"`
 	CompletionTokens int `json:"completion_tokens,omitempty"`
+	PromptTokens     int `json:"prompt_tokens,omitempty"`
 	TotalTokens      int `json:"total_tokens,omitempty"`
 }
 
