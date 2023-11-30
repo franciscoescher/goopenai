@@ -61,7 +61,7 @@ type Tools struct {
 type Function struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
-	Parameters  []byte `json:"parameters"`
+	Parameters  any    `json:"parameters"`
 }
 
 type ResponseFormat struct {
@@ -71,7 +71,7 @@ type ResponseFormat struct {
 type CompletionFunciton struct {
 	Name        string `json:"name,omitempty"`
 	Description string `json:"description,omitempty"`
-	Parameters  []byte `json:"parameters,omitempty"`
+	Parameters  any    `json:"parameters,omitempty"`
 }
 
 type CreateChatCompletionsResponse struct {
