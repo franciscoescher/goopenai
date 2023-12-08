@@ -13,7 +13,7 @@ type RetrieveModelResponse struct {
 }
 
 func (c *Client) RetrieveModelRaw(ctx context.Context, id string) ([]byte, error) {
-	return c.Get(ctx, modelUrl+id, nil)
+	return c.Get(ctx, c.apiBase+modelUrl+id, nil)
 }
 
 func (c *Client) RetrieveModel(ctx context.Context, id string) (response *RetrieveModelResponse, err error) {

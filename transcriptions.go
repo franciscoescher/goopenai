@@ -19,7 +19,7 @@ type CreateTranscriptionsResponse struct {
 }
 
 func (c *Client) CreateTranscriptionsRaw(ctx context.Context, r *CreateTranscriptionsRequest) ([]byte, error) {
-	return c.Post(ctx, transcriptionsUrl, r)
+	return c.Post(ctx, c.apiBase+transcriptionsUrl, r)
 }
 
 func (c *Client) CreateTranscriptions(ctx context.Context, r *CreateTranscriptionsRequest) (response *CreateTranscriptionsResponse, err error) {

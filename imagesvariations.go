@@ -23,7 +23,7 @@ type CreateImagesVariationsData struct {
 }
 
 func (c *Client) CreateImagesVariationsRaw(ctx context.Context, r *CreateImagesVariationsRequest) ([]byte, error) {
-	return c.Post(ctx, imagesVariationsUrl, r)
+	return c.Post(ctx, c.apiBase + imagesVariationsUrl, r)
 }
 
 func (c *Client) CreateImagesVariations(ctx context.Context, r *CreateImagesVariationsRequest) (response *CreateImagesVariationsResponse, err error) {

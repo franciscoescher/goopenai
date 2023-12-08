@@ -12,6 +12,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const apiBase = "https://api.openai.com/v1"
+
 func Test_CreateChatCompletions_OK(t *testing.T) {
 	ctx := context.Background()
 	method := http.MethodPost
@@ -32,7 +34,7 @@ func Test_CreateChatCompletions_OK(t *testing.T) {
 	mocked := getMockedClient(getMockedClientParams{
 		T:       t,
 		Context: ctx,
-		URL:     completionsUrl,
+		URL:     apiBase + completionsUrl,
 		Method:  method,
 		Body:    body,
 	})
@@ -73,7 +75,7 @@ func Test_CreateChatCompletions_Error(t *testing.T) {
 	mocked := getMockedClient(getMockedClientParams{
 		T:       t,
 		Context: ctx,
-		URL:     completionsUrl,
+		URL:     apiBase + completionsUrl,
 		Method:  method,
 		Body:    body,
 	})
@@ -120,7 +122,7 @@ func Test_CreateChatCompletions_Failure(t *testing.T) {
 	mocked := getMockedClient(getMockedClientParams{
 		T:       t,
 		Context: ctx,
-		URL:     completionsUrl,
+		URL:     apiBase + completionsUrl,
 		Method:  method,
 		Body:    body,
 	})

@@ -19,7 +19,8 @@ func main() {
 func getClient() *goopenai.Client {
 	apiKey := os.Getenv("API_KEY")
 	organization := os.Getenv("API_ORG")
-	return goopenai.NewClient(apiKey, organization)
+	apiBase := "https://api.openai.com/v1" // default 'https://api.openai.com/v1' if empty
+	return goopenai.NewClient(apiKey, organization, apiBase)
 }
 
 func writeModels(client *goopenai.Client) {

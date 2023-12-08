@@ -98,7 +98,7 @@ type CreateChatCompletionsUsave struct {
 }
 
 func (c *Client) CreateChatCompletionsRaw(ctx context.Context, r *CreateChatCompletionsRequest) ([]byte, error) {
-	return c.Post(ctx, completionsUrl, r)
+	return c.Post(ctx, c.apiBase + completionsUrl, r)
 }
 
 func (c *Client) CreateChatCompletions(ctx context.Context, r *CreateChatCompletionsRequest) (response *CreateChatCompletionsResponse, err error) {

@@ -18,7 +18,7 @@ type ListModelsData struct {
 }
 
 func (c *Client) ListModelsRaw(ctx context.Context) ([]byte, error) {
-	return c.Get(ctx, modelsUrl, nil)
+	return c.Get(ctx, c.apiBase+modelsUrl, nil)
 }
 
 func (c *Client) ListModels(ctx context.Context) (response *ListModelsResponse, err error) {

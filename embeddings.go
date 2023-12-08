@@ -31,7 +31,7 @@ type CreateEmbeddingsUsage struct {
 }
 
 func (c *Client) CreateEmbeddingsRaw(ctx context.Context, r *CreateEmbeddingsRequest) ([]byte, error) {
-	return c.Post(ctx, embeddingsUrl, r)
+	return c.Post(ctx, c.apiBase+embeddingsUrl, r)
 }
 
 func (c *Client) CreateEmbeddings(ctx context.Context, r *CreateEmbeddingsRequest) (response *CreateEmbeddingsResponse, err error) {
