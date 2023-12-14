@@ -35,6 +35,7 @@ import (
 func main() {
 	apiKey := os.Getenv("API_KEY")
 	organization := os.Getenv("API_ORG")
+	apiBase := os.Getenv("API_BASE") // defaults to https://api.openai.com/v1 if empty
 
 	client := goopenai.NewClient(apiKey, organization)
 
