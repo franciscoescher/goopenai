@@ -6,9 +6,10 @@ import (
 )
 
 type CreateEmbeddingsRequest struct {
-	Model string   `json:"model,omitempty"`
-	Input StrArray `json:"input,omitempty"`
-	User  string   `json:"user,omitempty"`
+	Model          string   `json:"model,omitempty"`
+	Input          StrArray `json:"input,omitempty"`
+	User           string   `json:"user,omitempty"`
+	EncodingFormat string   `json:"encoding_format,omitempty"`
 }
 
 type CreateEmbeddingsResponse struct {
