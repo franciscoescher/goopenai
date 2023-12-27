@@ -3,7 +3,8 @@ package goopenai
 const (
 	editsUrl            = "/edits"
 	embeddingsUrl       = "/embeddings"
-	completionsUrl      = "/chat/completions"
+	completionsUrl      = "/completions"
+	chatCompletionsUrl  = "/chat/completions"
 	imagesUrl           = "/images/generations"
 	imagesEditsUrl      = "/images/edits"
 	imagesVariationsUrl = "/images/variations"
