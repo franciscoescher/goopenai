@@ -12,7 +12,7 @@ type CreateChatCompletionsRequest struct {
 	TopP             *float64          `json:"top_p,omitempty"`
 	N                *int              `json:"n,omitempty"`
 	Stream           *bool             `json:"stream,omitempty"`
-	Stop             StrArray          `json:"stop,omitempty"`
+	Stop             []string          `json:"stop,omitempty"`
 	MaxTokens        *int              `json:"max_tokens,omitempty"`
 	PresencePenalty  *float64          `json:"presence_penalty,omitempty"`
 	FrequencyPenalty *float64          `json:"frequency_penalty,omitempty"`
@@ -98,7 +98,7 @@ type CreateChatCompletionsUsave struct {
 }
 
 func (c *Client) CreateChatCompletionsRaw(ctx context.Context, r *CreateChatCompletionsRequest) ([]byte, error) {
-	return c.Post(ctx, c.apiBase + completionsUrl, r)
+	return c.Post(ctx, c.apiBase+completionsUrl, r)
 }
 
 func (c *Client) CreateChatCompletions(ctx context.Context, r *CreateChatCompletionsRequest) (response *CreateChatCompletionsResponse, err error) {

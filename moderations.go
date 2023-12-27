@@ -6,7 +6,7 @@ import (
 )
 
 type CreateModerationsRequest struct {
-	Input StrArray `json:"input,omitempty"`
+	Input []string `json:"input,omitempty"`
 	Model string   `json:"model,omitempty"`
 }
 
