@@ -18,7 +18,7 @@ type CreateTranslationsResponse struct {
 }
 
 func (c *Client) CreateTranslationsRaw(ctx context.Context, r *CreateTranslationsRequest) ([]byte, error) {
-	return c.Post(ctx, translationsUrl, r)
+	return c.Post(ctx, c.apiBase+translationsUrl, r)
 }
 
 func (c *Client) CreateTranslations(ctx context.Context, r *CreateTranslationsRequest) (response *CreateTranslationsResponse, err error) {

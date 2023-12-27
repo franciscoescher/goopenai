@@ -17,6 +17,7 @@ type HttpClient interface {
 
 type Client struct {
 	client       HttpClient
+	apiBase      string
 	apiKey       string
 	organization string
 }
@@ -25,8 +26,12 @@ type Client struct {
 var _ ClientInterface = (*Client)(nil)
 
 // NewClient creates a new client
-func NewClient(apiKey string, organization string) *Client {
+func NewClient(apiKey string, organization string, apiBase string) *Client {
+	if apiBase == "" {
+		apiBase = "https://api.opanai.com/v1"
+	}
 	return &Client{
+		apiBase:      apiBase,
 		apiKey:       apiKey,
 		organization: organization,
 		client:       &http.Client{},

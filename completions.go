@@ -5,6 +5,13 @@ import (
 	"encoding/json"
 )
 
+type CreateCompletionsRequest struct {
+	Prompt      string  `json:"prompt"`
+	MaxTokens   int     `json:"max_tokens"`
+	Temperature float64 `json:"temperature"`
+	TopP        float64 `json:"top_p"`
+	Seed        int     `json:"seed"`
+}
 type CreateChatCompletionsRequest struct {
 	Model            string            `json:"model,omitempty"`
 	Messages         []Message         `json:"messages,omitempty"`
@@ -12,7 +19,7 @@ type CreateChatCompletionsRequest struct {
 	TopP             *float64          `json:"top_p,omitempty"`
 	N                *int              `json:"n,omitempty"`
 	Stream           *bool             `json:"stream,omitempty"`
-	Stop             StrArray          `json:"stop,omitempty"`
+	Stop             []string          `json:"stop,omitempty"`
 	MaxTokens        *int              `json:"max_tokens,omitempty"`
 	PresencePenalty  *float64          `json:"presence_penalty,omitempty"`
 	FrequencyPenalty *float64          `json:"frequency_penalty,omitempty"`
@@ -73,7 +80,26 @@ type CompletionFunciton struct {
 	Description string `json:"description,omitempty"`
 	Parameters  any    `json:"parameters,omitempty"`
 }
-
+type CreateCompletionsResponse struct {
+	ID      string `json:"id"`
+	Object  string `json:"object"`
+	Created int    `json:"created"`
+	Model   string `json:"model"`
+	Choices []struct {
+		Index        int    `json:"index"`
+		FinishReason string `json:"finish_reason"`
+		Text         string `json:"text"`
+		Logprobs     struct {
+			TopLogprobs []struct {
+			} `json:"top_logprobs"`
+		} `json:"logprobs"`
+	} `json:"choices"`
+	Usage struct {
+		PromptTokens     int `json:"prompt_tokens"`
+		CompletionTokens int `json:"completion_tokens"`
+		TotalTokens      int `json:"total_tokens"`
+	} `json:"usage"`
+}
 type CreateChatCompletionsResponse struct {
 	ID                string                        `json:"id,omitempty"`
 	Choices           []CreateChatCompletionsChoice `json:"choices,omitempty"`
@@ -98,11 +124,25 @@ type CreateChatCompletionsUsave struct {
 }
 
 func (c *Client) CreateChatCompletionsRaw(ctx context.Context, r *CreateChatCompletionsRequest) ([]byte, error) {
-	return c.Post(ctx, completionsUrl, r)
+	return c.Post(ctx, c.apiBase+chatCompletionsUrl, r)
 }
 
 func (c *Client) CreateChatCompletions(ctx context.Context, r *CreateChatCompletionsRequest) (response *CreateChatCompletionsResponse, err error) {
 	raw, err := c.CreateChatCompletionsRaw(ctx, r)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(raw, &response)
+	return response, err
+}
+
+func (c *Client) CreateCompletionsRaw(ctx context.Context, r *CreateCompletionsRequest) ([]byte, error) {
+	return c.Post(ctx, c.apiBase+completionsUrl, r)
+}
+
+func (c *Client) CreateCompletions(ctx context.Context, r *CreateCompletionsRequest) (response *CreateCompletionsResponse, err error) {
+	raw, err := c.CreateCompletionsRaw(ctx, r)
 	if err != nil {
 		return nil, err
 	}

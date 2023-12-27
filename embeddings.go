@@ -7,7 +7,7 @@ import (
 
 type CreateEmbeddingsRequest struct {
 	Model          string   `json:"model,omitempty"`
-	Input          StrArray `json:"input,omitempty"`
+	Input          []string `json:"input,omitempty"`
 	User           string   `json:"user,omitempty"`
 	EncodingFormat string   `json:"encoding_format,omitempty"`
 }
@@ -32,7 +32,7 @@ type CreateEmbeddingsUsage struct {
 }
 
 func (c *Client) CreateEmbeddingsRaw(ctx context.Context, r *CreateEmbeddingsRequest) ([]byte, error) {
-	return c.Post(ctx, embeddingsUrl, r)
+	return c.Post(ctx, c.apiBase+embeddingsUrl, r)
 }
 
 func (c *Client) CreateEmbeddings(ctx context.Context, r *CreateEmbeddingsRequest) (response *CreateEmbeddingsResponse, err error) {

@@ -23,7 +23,7 @@ type CreateImagesData struct {
 }
 
 func (c *Client) CreateImagesRaw(ctx context.Context, r *CreateImagesRequest) ([]byte, error) {
-	return c.Post(ctx, imagesUrl, r)
+	return c.Post(ctx, c.apiBase + imagesUrl, r)
 }
 
 func (c *Client) CreateImages(ctx context.Context, r *CreateImagesRequest) (response *CreateImagesResponse, err error) {

@@ -25,7 +25,7 @@ type CreateImagesEditsData struct {
 }
 
 func (c *Client) CreateImagesEditsRaw(ctx context.Context, r *CreateImagesEditsRequest) ([]byte, error) {
-	return c.Post(ctx, imagesEditsUrl, r)
+	return c.Post(ctx, c.apiBase + imagesEditsUrl, r)
 }
 
 func (c *Client) CreateImagesEdits(ctx context.Context, r *CreateImagesEditsRequest) (response *CreateImagesEditsResponse, err error) {

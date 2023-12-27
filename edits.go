@@ -33,7 +33,7 @@ type CreateEditsUsage struct {
 }
 
 func (c *Client) CreateEditsRaw(ctx context.Context, r *CreateEditsRequest) ([]byte, error) {
-	return c.Post(ctx, editsUrl, r)
+	return c.Post(ctx, c.apiBase+editsUrl, r)
 }
 
 func (c *Client) CreateEdits(ctx context.Context, r *CreateEditsRequest) (response *CreateEditsResponse, err error) {

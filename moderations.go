@@ -6,7 +6,7 @@ import (
 )
 
 type CreateModerationsRequest struct {
-	Input StrArray `json:"input,omitempty"`
+	Input []string `json:"input,omitempty"`
 	Model string   `json:"model,omitempty"`
 }
 
@@ -43,7 +43,7 @@ type CreateModerationsCategoriesScores struct {
 }
 
 func (c *Client) CreateModerationsRaw(ctx context.Context, r *CreateModerationsRequest) ([]byte, error) {
-	return c.Post(ctx, moderationsUrl, r)
+	return c.Post(ctx, c.apiBase+moderationsUrl, r)
 }
 
 func (c *Client) CreateModerations(ctx context.Context, r *CreateModerationsRequest) (response *CreateModerationsResponse, err error) {

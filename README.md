@@ -35,8 +35,9 @@ import (
 func main() {
 	apiKey := os.Getenv("API_KEY")
 	organization := os.Getenv("API_ORG")
+	apiBase := os.Getenv("API_BASE") // defaults to https://api.openai.com/v1 if empty
 
-	client := goopenai.NewClient(apiKey, organization)
+	client := goopenai.NewClient(apiKey, organization, apiBase)
 
 	r := &goopenai.CreateChatCompletionsRequest{
 		Model: "gpt-3.5-turbo",
