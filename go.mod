@@ -1,4 +1,4 @@
-module github.com/Alumniminium/goopenai
+module github.com/Alumniminium/goopenai/v3
 
 go 1.21
 
