@@ -1,5 +1,11 @@
 # Go OpenAI
 
+###### DEPRECATION NOTICE
+
+[DEPRECATED] This code is no longer maintained. Please use the official Azure Open AI client: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/ai/azopenai
+
+###### Introduction
+
 This is a Go client library for the OpenAI API.
 
 It implements the methods described in the docs: https://platform.openai.com/docs/api-reference/introduction
